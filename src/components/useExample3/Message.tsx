@@ -1,18 +1,24 @@
 import { use, useState, Suspense } from 'react';
 
 // Simulate fetching a message
-function fetchMessage() {
+function fetchMessage(): Promise<string> {
   return new Promise((resolve) => setTimeout(resolve, 1000, '⚛️'));
 }
 
+
+type MessageOutputProps = {
+  messagePromise: Promise<string>
+}
 // MessageOutput component
-const MessageOutput = ({ messagePromise }) => {
+const MessageOutput:React.FC<MessageOutputProps> = ({ messagePromise }) => {
   const messageContent = use(messagePromise);
   return <p className='text-xl'>Here is the message: {messageContent}</p>;
 };
 
+
+type Props = MessageOutputProps;
 // MessageContainer component
-const MessageContainer = ({ messagePromise }) => {
+const MessageContainer:React.FC<Props> = ({ messagePromise }) => {
   return (
     <Suspense fallback={<p className='text-xl'>⌛Downloading message...</p>}>
       <MessageOutput messagePromise={messagePromise} />
@@ -22,7 +28,7 @@ const MessageContainer = ({ messagePromise }) => {
 
 // Message component
 const Message = () => {
-  const [messagePromise, setMessagePromise] = useState(null);
+  const [messagePromise, setMessagePromise] = useState<Promise<string> | null>(null);
 
   const [show, setShow] = useState(false);
 
@@ -32,7 +38,7 @@ const Message = () => {
   }
 
   if (show) {
-    return <MessageContainer messagePromise={messagePromise} />;
+    return <MessageContainer messagePromise={messagePromise as Promise<string>} />;
   } else {
     return (
       <button

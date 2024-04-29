@@ -1,15 +1,25 @@
 import { useOptimistic, useState, useRef } from 'react';
 
-const MessageForm = ({ addOptimisticMessage, sendMessage }) => {
+
+type Message = {
+  text: string;
+  sending?: boolean;
+}
+
+type MessageFormProps = {
+  sendMessage: (formData: FormData) => Promise<void>
+  addOptimisticMessage: (message: string) => void
+}
+const MessageForm: React.FC<MessageFormProps> = ({ addOptimisticMessage, sendMessage }) => {
   // Create a reference to the form
-  const formRef = useRef();
+  const formRef = useRef<HTMLFormElement | null>(null);
 
   // This function is called when the form is submitted
-  const formAction = async (formData) => {
-    addOptimisticMessage(formData.get('message'));
+  const formAction = async (formData: FormData) => {
+    addOptimisticMessage(formData.get('message') as string);
 
     // Clear the form
-    formRef.current.reset();
+    formRef?.current?.reset();
 
     await sendMessage(formData);
   };
@@ -32,9 +42,14 @@ const MessageForm = ({ addOptimisticMessage, sendMessage }) => {
   );
 };
 
-const Thread = ({ messages, sendMessage }) => {
+
+type ThreadProps = {
+  messages: Message[],
+  sendMessage: (formData: FormData) => Promise<void>
+}
+const Thread: React.FC<ThreadProps> = ({ messages, sendMessage }) => {
   // The useOptimistic hook is used to add an optimistic message to the list of messages
-  const [optimisticMessages, addOptimisticMessage] = useOptimistic(
+  const [optimisticMessages, addOptimisticMessage] = useOptimistic<Message[], string>(
     messages,
     (state, newMessage) => [
       ...state,
@@ -63,17 +78,17 @@ const Thread = ({ messages, sendMessage }) => {
   );
 };
 
-const deliverMessage = async (message) => {
+const deliverMessage = async (message: string) => {
   // Simulate a delay
   await new Promise((res) => setTimeout(res, 1000));
   return message;
 };
 
 const MessageBox = () => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<Message[]>([]);
 
-  async function sendMessage(formData) {
-    const sentMessage = await deliverMessage(formData.get('message'));
+  async function sendMessage(formData: FormData) {
+    const sentMessage = await deliverMessage(formData.get('message') as string);
 
     setMessages((messages) => [...messages, { text: sentMessage }]);
   }

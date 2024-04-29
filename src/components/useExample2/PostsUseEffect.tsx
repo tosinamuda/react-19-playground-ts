@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
+import { Post } from './types';
 
-const PostItems = ({ posts }) => {
+
+type PostItemsProps = {
+  posts: Post[]
+}
+const PostItems:React.FC<PostItemsProps> = ({ posts }) => {
   return (
     <ul>
       {posts.map((post) => (
@@ -14,7 +19,7 @@ const PostItems = ({ posts }) => {
 };
 
 const Posts = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

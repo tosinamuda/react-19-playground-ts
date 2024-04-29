@@ -1,6 +1,6 @@
 import { useFormState } from 'react-dom';
 
-const addToCart = (prevState, queryData) => {
+const addToCart = (_prevState: string | null, queryData: FormData) => {
   const itemID = queryData.get('itemID');
   if (itemID === '1') {
     return 'Added to cart';
@@ -9,7 +9,13 @@ const addToCart = (prevState, queryData) => {
   }
 };
 
-const AddToCartForm = ({ itemID, itemTitle }) => {
+type Cart = {
+  itemID: string;
+  itemTitle: string;
+}
+
+
+const AddToCartForm:React.FC<Cart> = ({ itemID, itemTitle }) => {
   const [message, formAction] = useFormState(addToCart, null);
 
   return (

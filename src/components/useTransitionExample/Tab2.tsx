@@ -8,7 +8,9 @@ const Tab2 = memo(function Tab2() {
   return <ul className='items'>{items}</ul>;
 });
 
-function Post({ index }) {
+
+
+const Post:React.FC<{index: number}> = ({ index }) => {
   let startTime = performance.now();
   while (performance.now() - startTime < 1) {
     // Artificial delay

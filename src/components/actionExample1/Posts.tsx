@@ -1,7 +1,15 @@
 import { useState } from 'react';
 
+type Post = {
+  title: string;
+  body: string;
+}
+
+type PostItemProps = {
+  post: Post
+}
 // PostItem component
-const PostItem = ({ post }) => {
+const PostItem:React.FC<PostItemProps> = ({ post }) => {
   return (
     <div className='bg-blue-50 shadow-md p-4 my-6 rounded-lg'>
       <h2 className='text-xl font-bold'>{post.title}</h2>
@@ -10,13 +18,16 @@ const PostItem = ({ post }) => {
   );
 };
 
+type PostFormProps = {
+  addPost: (post: Post) => void
+}
 // PostForm component
-const PostForm = ({ addPost }) => {
-  const formAction = async (formData) => {
+const PostForm:React.FC<PostFormProps> = ({ addPost }) => {
+  const formAction = async (formData: FormData) => {
     // We have direct access to the form data
-    const newPost = {
-      title: formData.get('title'),
-      body: formData.get('body'),
+    const newPost:Post = {
+      title: formData.get('title') as string,
+      body: formData.get('body') as string,
     };
 
     addPost(newPost);
@@ -52,7 +63,7 @@ const PostForm = ({ addPost }) => {
         <textarea
           className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
           id='body'
-          rows='5'
+          rows={5}
           placeholder='Enter body'
           name='body'
         ></textarea>
@@ -71,9 +82,9 @@ const PostForm = ({ addPost }) => {
 
 // Posts component
 const Posts = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
-  const addPost = (newPost) => {
+  const addPost = (newPost: Post) => {
     setPosts((posts) => [...posts, newPost]);
   };
 

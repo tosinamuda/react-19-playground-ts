@@ -1,12 +1,18 @@
-import React, { createContext, useState, use } from 'react';
+import React, { createContext, useState, use, PropsWithChildren } from 'react';
+
+type ThemeType = "light" | "dark"
+type ThemeContextType = {
+  theme: ThemeType,
+  toggleTheme: () => void
+}
 
 // Create a context object
-const ThemeContext = createContext();
+const ThemeContext = createContext<ThemeContextType | null>(null);
 
 // Create a provider component
-const ThemeProvider = ({ children }) => {
+const ThemeProvider:React.FC<PropsWithChildren> = ({ children }) => {
   // State to hold the current theme
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState<ThemeType>('light');
 
   // Function to toggle theme
   const toggleTheme = () => {
@@ -23,7 +29,7 @@ const ThemeProvider = ({ children }) => {
 
 const ThemedCard = () => {
   // Access the theme context using the use() hook
-  const { theme, toggleTheme } = use(ThemeContext);
+  const { theme, toggleTheme } = use(ThemeContext) ?? {};
 
   return (
     <div

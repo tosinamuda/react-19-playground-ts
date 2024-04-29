@@ -1,8 +1,9 @@
 import { use, Suspense } from 'react';
+import { Post } from './types';
 
 const fetchPosts = async () => {
   const res = await fetch('https://jsonplaceholder.typicode.com/posts');
-  return res.json();
+  return res.json() as Promise<Post[]>;
 };
 
 const PostItems = () => {

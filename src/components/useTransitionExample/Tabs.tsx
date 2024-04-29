@@ -4,11 +4,13 @@ import Tab1 from './Tab1';
 import Tab2 from './Tab2';
 import Tab3 from './Tab3';
 
-export function Tabs() {
-  const [isPending, startTransition] = useTransition();
-  const [tab, setTab] = useState('tab1');
+type AllowedTabs = "tab1" | "tab2" | "tab3"
 
-  function selectTab(nextTab) {
+export function Tabs() {
+  const [_isPending, startTransition] = useTransition();
+  const [tab, setTab] = useState<AllowedTabs>('tab1');
+
+  function selectTab(nextTab: AllowedTabs) {
     startTransition(() => {
       setTab(nextTab);
     });

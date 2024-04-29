@@ -1,8 +1,9 @@
 import { use, Suspense } from 'react';
+import { type Joke as JokeModel } from './types';
 
 const fetchData = async () => {
   const res = await fetch('https://api.chucknorris.io/jokes/random');
-  return res.json();
+  return res.json() as Promise<JokeModel>;
 };
 
 const JokeItem = () => {
