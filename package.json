@@ -29,8 +29,8 @@
     "vite": "^5.1.4"
   },
   "overrides": {
-    "@types/react": "npm:types-react@beta",
-    "@types/react-dom": "npm:types-react-dom@beta",
+    "@types/react": "$@types/react",
+    "@types/react-dom": "$@types/react-dom",
     "react-router-dom": {
       "react": "$react",
       "react-dom": "$react-dom"
